@@ -3,3 +3,4 @@
 /bin/
 /gems/
 *.db
+/bitcoin/

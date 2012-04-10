@@ -2,10 +2,13 @@ require 'sinatra/base'
 require "sinatra/reloader"
 require 'slim'
 require 'sqlite3'
+require 'bitbank'
 
 class ShellCoin < Sinatra::Base
   @@path = File.dirname(__FILE__)
   @@sql = SQLite3::Database.new("#{@@path}/usercoins.db")
+  @@config = YAML.load(File.open("#{@@path}/config.yml"))
+  @@bitcoin =  Bitbank.new(@@config["bitbank"])
 
   @@sql.execute <<-SQL
   create table if not exists users (
@@ -29,16 +32,23 @@ class ShellCoin < Sinatra::Base
 
   get '/' do
     @count = @@sql.execute( "select count(*) from users")[0][0]
+    @block_count = @@bitcoin.block_count
     slim :index
   end
 
   post '/' do
-    user = load(params[:username])
-    unless user
-      @@sql.execute("insert into users (username, ssh_key) values (?,?)", 
-                    params[:username], params[:ssh_key])
+    if !params[:username].blank? && !params[:ssh_key].blank?
+      username = params[:username].gsub(/ /,'')
+      user = load(username)
+      unless user
+        account = @@bitcoin.new_account('shellcoin-'+username)
+        @@sql.execute("insert into users (username, ssh_key, bitcoin_address) values (?,?,?)", 
+                      username, params[:ssh_key], account.address)
+      end
+      redirect to("/#{username}")
+    else
+      redirect to("/")
     end
-    redirect to("/#{params[:username]}")
   end
 
   get '/:username' do
