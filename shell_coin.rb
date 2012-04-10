@@ -20,14 +20,15 @@ class ShellCoin < Sinatra::Base
   SQL
 
   configure do
-    set :sessions, true
+    enable :sessions, :logging
+    disable :protection
     set :slim, :pretty => true
 
     register Sinatra::Reloader
   end
 
   get '/' do
-    puts "wtf"
+    puts request.inspect
     @count = @@sql.execute( "select count(*) from users")[0][0]
     slim :index
   end
