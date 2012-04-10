@@ -1,9 +1,11 @@
 H1
   | Shell Service 
 p
-  | Count #{@count}
+  | User count #{@count}
 
 form method="post"
+  p
+    | Create a new shell account
   ul
     li
       label for="username"
@@ -13,6 +15,6 @@ form method="post"
     li
       label for="ssh_key"
        | ssh key
-      textarea name="ssh_key"
+      textarea name="ssh_key" cols="80"
 
     input type="submit" value="Create User"

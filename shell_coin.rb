@@ -13,6 +13,10 @@ class ShellCoin < Sinatra::Base
       ssh_key text,
       bitcoin_address text
   );
+  create table if not exists history (
+      username text,
+      note text
+  );
   SQL
 
   configure do
@@ -24,11 +28,17 @@ class ShellCoin < Sinatra::Base
 
   get '/' do
     puts "wtf"
-    @count = @@sql.execute( "select count(*) from users")[0]
+    @count = @@sql.execute( "select count(*) from users")[0][0]
     slim :index
   end
 
+  post '/' do
+    redirect to("/#{params[:username]}")
+  end
+
   get '/:username' do
+    @user = @@sql.execute("select * from users where username = ?", params[:username])
+
     slim :show
   end
 end
