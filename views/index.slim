@@ -1,0 +1,18 @@
+H1
+  | Shell Service 
+p
+  | Count #{@count}
+
+form method="post"
+  ul
+    li
+      label for="username"
+        | username
+      input name="username"
+
+    li
+      label for="ssh_key"
+       | ssh key
+      textarea name="ssh_key"
+
+    input type="submit" value="Create User"
