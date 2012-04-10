@@ -28,18 +28,26 @@ class ShellCoin < Sinatra::Base
   end
 
   get '/' do
-    puts request.inspect
     @count = @@sql.execute( "select count(*) from users")[0][0]
     slim :index
   end
 
   post '/' do
+    user = load(params[:username])
+    unless user
+      @@sql.execute("insert into users (username, ssh_key) values (?,?)", 
+                    params[:username], params[:ssh_key])
+    end
     redirect to("/#{params[:username]}")
   end
 
   get '/:username' do
-    @user = @@sql.execute("select * from users where username = ?", params[:username])
-
+    @user = load(params[:username])
     slim :show
+  end
+
+  def load(username)
+    rows = @@sql.execute("select * from users where username = ?", username)
+    rows.first if rows.size > 0
   end
 end

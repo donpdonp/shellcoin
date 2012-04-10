@@ -1,4 +1,6 @@
 # config.ru
 require 'shell_coin.rb'
 
-run ShellCoin
+map "/shell" do
+  run ShellCoin
+end
