@@ -14,10 +14,13 @@ class ShellCoin < Sinatra::Base
   create table if not exists users (
       username text,
       ssh_key text,
-      bitcoin_address text
+      bitcoin_address text,
+      valid_until text,
+      spend_rate text
   );
   create table if not exists history (
       username text,
+      txid text,
       note text
   );
   SQL
@@ -53,7 +56,12 @@ class ShellCoin < Sinatra::Base
 
   get '/:username' do
     @user = load(params[:username])
-    slim :show
+    if @user
+      @account = @@bitcoin.new_account('shellcoin-'+params[:username])
+      slim :show
+    else
+      redirect to("/")
+    end
   end
 
   def load(username)

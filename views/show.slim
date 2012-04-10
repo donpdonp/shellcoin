@@ -1,4 +1,25 @@
 H1
   | #{params[:username]}
 
-#{@user}
+p
+  | SSH Key 
+  = @user[1]
+p
+  | Bitcoin receiving address 
+  = @user[2]
+
+p
+  | Valid Until
+  = @user[3]
+
+p
+  | Spend rate
+  = @user[4]
+
+p
+  | Transactions
+
+- @account.transactions.each do |tx|
+  li
+    | #{tx}
+
