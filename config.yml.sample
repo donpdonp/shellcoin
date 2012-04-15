@@ -1,0 +1,7 @@
+bitbank:
+  #:username: "bitcoinrpc"
+  #:password: "2L8biPEUgtzDyP2WkenUervSTL4GzMqJmKLVdRbq82vF"
+  :username: "towercoin"
+  :password: "srcdoaesrcudrsadzrcdarodeuckbqj0"
+  :host: "192.168.0.29"
+

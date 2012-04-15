@@ -4,3 +4,4 @@
 /gems/
 *.db
 /bitcoin/
+/config.yml
