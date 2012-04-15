@@ -5,7 +5,7 @@ require 'sqlite3'
 require 'bitbank'
 
 class ShellCoin < Sinatra::Base
-  @@path = File.dirname(__FILE__)+"/../"
+  @@path = File.dirname(__FILE__)
   @@sql = SQLite3::Database.new("#{@@path}/usercoins.db")
   @@config = YAML.load(File.open("#{@@path}/config.yml"))
   @@bitcoin =  Bitbank.new(@@config["bitbank"])
