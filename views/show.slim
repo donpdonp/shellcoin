@@ -1,25 +1,40 @@
 H1
   | #{params[:username]}
 
-p
+h2
   | SSH Key 
-  = @user[1]
 p
+  - key = @user[1].split
+  | #{key[0]} #{key[1][0..4]}... #{key[2]}
+
+h2
+  | Balance
+p
+  | #{@account.balance}BTC
+
+h2
   | Bitcoin receiving address 
+p
   = @user[2]
 
-p
+h2
   | Valid Until
+p
   = @user[3]
 
-p
+h2
   | Spend rate
+p
   = @user[4]
 
-p
+h2
   | Transactions
 
-- @account.transactions.each do |tx|
-  li
-    | #{tx}
+ul
+  - @account.transactions.each do |tx|
+    li 
+      | #{tx.time} 
+      span style="font-weight:bold"
+        | #{tx.amount}BTC 
+      | from:#{tx.address}
 
