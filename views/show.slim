@@ -8,11 +8,6 @@ p
   | #{key[0]} #{key[1][0..4]}... #{key[2]}
 
 h2
-  | Balance
-p
-  | #{@account.balance}BTC
-
-h2
   | Bitcoin receiving address 
 p
   = @user[2]
@@ -30,6 +25,11 @@ h2
   | Spend rate
 p
   | #{@user[4].to_i/60/60/24} days per coin
+
+h2
+  | Balance
+p
+  | #{@account.balance}BTC
 
 h2
   | Transactions
