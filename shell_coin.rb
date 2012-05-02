@@ -47,7 +47,7 @@ class ShellCoin < Sinatra::Base
       unless user
         account = @@bitcoin.new_account('shellcoin-'+username)
         @@sql.execute("insert into users (username, ssh_key, bitcoin_address, valid_until, spend_rate) values (?,?,?,?,?)",
-                      username, params[:ssh_key], account.address, Time.now.utc, SECONDS_PER_COIN)
+                      username, params[:ssh_key], account.address, Time.now.utc.strftime("%FT%T%:z"), SECONDS_PER_COIN)
       end
       redirect to("/#{username}")
     else
