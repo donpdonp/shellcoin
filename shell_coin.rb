@@ -9,6 +9,7 @@ class ShellCoin < Sinatra::Base
   @@sql = SQLite3::Database.new("#{@@path}/usercoins.db")
   @@config = YAML.load(File.open("#{@@path}/config.yml"))
   @@bitcoin =  Bitbank.new(@@config["bitbank"])
+  SECONDS_PER_COIN = 60 * 60 * 24 * 365
 
   @@sql.execute <<-SQL
   create table if not exists users (
@@ -45,8 +46,8 @@ class ShellCoin < Sinatra::Base
       user = load(username)
       unless user
         account = @@bitcoin.new_account('shellcoin-'+username)
-        @@sql.execute("insert into users (username, ssh_key, bitcoin_address) values (?,?,?)", 
-                      username, params[:ssh_key], account.address)
+        @@sql.execute("insert into users (username, ssh_key, bitcoin_address, valid_until, spend_rate) values (?,?,?,?,?)",
+                      username, params[:ssh_key], account.address, Time.now.utc, SECONDS_PER_COIN)
       end
       redirect to("/#{username}")
     else
