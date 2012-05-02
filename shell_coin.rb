@@ -7,6 +7,7 @@ require 'bitbank'
 class ShellCoin < Sinatra::Base
   @@path = File.dirname(__FILE__)
   @@sql = SQLite3::Database.new("#{@@path}/usercoins.db")
+  @@sql.results_as_hash = true
   @@config = YAML.load(File.open("#{@@path}/config.yml"))
   @@bitcoin =  Bitbank.new(@@config["bitbank"])
   SECONDS_PER_COIN = 60 * 60 * 24 * 365
@@ -17,7 +18,8 @@ class ShellCoin < Sinatra::Base
       ssh_key text,
       bitcoin_address text,
       valid_until text,
-      spend_rate text
+      spend_rate text,
+      last_btc_tx text
   );
   create table if not exists history (
       username text,
