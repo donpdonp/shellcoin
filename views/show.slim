@@ -4,18 +4,18 @@ H1
 h2
   | SSH Key 
 p
-  - key = @user[1].split
+  - key = @user["ssh_key"].split
   | #{key[0]} #{key[1][0..4]}... #{key[2]}
 
 h2
   | Bitcoin receiving address 
 p
-  = @user[2]
+  = @user["bitcoin_address"]
 
 h2
   | Valid Until
 p
-  - time_diff = ((Time.parse(@user[3]) - Time.now)/60/60/24).to_i
+  - time_diff = ((Time.parse(@user["valid_until"]) - Time.now)/60/60/24).to_i
   - if time_diff > 0
     | #{time_diff} days remaining
   - else
@@ -24,7 +24,7 @@ p
 h2
   | Spend rate
 p
-  | #{@user[4].to_i/60/60/24} days per coin
+  | #{@user["spend_rate"].to_i/60/60/24} days per coin
 
 h2
   | Balance
@@ -40,5 +40,8 @@ ul
       | #{tx.time} 
       span style="font-weight:bold"
         | #{tx.amount}BTC 
-      | from:#{tx.address}
+      | from: #{tx.address}
+      |  #{tx.txid}
+      - if @user["last_btc_tx"] == tx.txid
+        |  Highwater
 
