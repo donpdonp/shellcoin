@@ -20,12 +20,16 @@ p
 h2
   | Valid Until
 p
-  = @user[3]
+  - time_diff = ((Time.parse(@user[3]) - Time.now)/60/60/24).to_i
+  - if time_diff > 0
+    | #{time_diff} days remaining
+  - else
+    | expired #{time_diff} days ago
 
 h2
   | Spend rate
 p
-  = @user[4]
+  | #{@user[4].to_i/60/60/24} days per coin
 
 h2
   | Transactions
