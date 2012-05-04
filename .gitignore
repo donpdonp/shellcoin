@@ -5,3 +5,4 @@
 *.db
 /bitcoin/
 /config.yml
+/shellcoin
