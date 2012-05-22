@@ -1,4 +1,5 @@
 // command line utility for shellcoin
+//
 use std;
 use sqlite;
 
